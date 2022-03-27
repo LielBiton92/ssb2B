@@ -8,6 +8,7 @@ const  int  limit = 100;
 using namespace std;
 namespace ariel{
         void check_t(unsigned int col , unsigned int tw);
+        void check_t2(int page , int row , int col);
 class Notebook;
 class Page;
 class Row;
@@ -18,19 +19,19 @@ class Notebook{
  
         public:
 
-          void check_pages_size(const unsigned int page);
+          void check_pages_size(const  int page);
 
-          void write(const unsigned int page ,const  unsigned int row ,const  unsigned int col ,const Direction state ,const  std::string &towrite);
+          void write(const  int page ,const   int row ,const   int col ,const Direction state ,const  std::string &towrite);
 
-          std::string read(const unsigned int page ,const  unsigned int row ,const  unsigned int col ,const ariel::Direction state ,const unsigned int  );
+          std::string read(const  int page ,const   int row ,const   int col ,const ariel::Direction state ,const  int  );
 
-          void erase(const unsigned int page ,const  unsigned int  row ,const  unsigned int col ,const Direction state ,const unsigned int num);
+          void erase(const  int page ,const   int  row ,const   int col ,const Direction state ,const  int num);
 
-          bool check_dirty(const unsigned int page ,const unsigned int row ,const unsigned int col ,const Direction state ,const unsigned int numtocheck);
+          bool check_dirty(const  int page ,const  int row ,const  int col ,const Direction state ,const  int numtocheck);
 
-          void show(const unsigned int page);
+          void show(const  int page);
 
-          void check_throws(unsigned int page , unsigned int row , unsigned int col ,Direction state , unsigned int numtocheck);
+          void check_throws( int page ,  int row ,  int col ,Direction state ,  int numtocheck);
 
 
 

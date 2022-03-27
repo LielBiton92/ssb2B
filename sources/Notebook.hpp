@@ -31,7 +31,7 @@ class Notebook{
 
           void show(const  int page);
 
-          void check_throws( int page ,  int row ,  int col ,Direction state ,  int numtocheck);
+          //void check_throws( int page ,  int row ,  int col ,Direction state ,  int numtocheck);
 
 
 

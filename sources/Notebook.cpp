@@ -13,96 +13,84 @@ const int col_limit = 100;
 
  void ariel::check_t(const unsigned int col ,const unsigned int tw ){
          if (col + tw  > col_limit){
-               throw std::invalid_argument("((()))"); 
+               throw std::invalid_argument("cannot reading/writing after col num 100 "); 
          }
  }
 
  void ariel::check_t2(int page , int row , int col){
          if (page < 0 or row < 0 or col < 0){
-                 throw::out_of_range("$%$%$%$%");
+                 throw::out_of_range("page row and col cannot be negative");
          }
+                         if(col >lim_col){
+                throw::out_of_range("max col is 100");
+        }
  }
 
-void ariel::Notebook::check_throws(const  int page ,const  int row ,const  int col ,const Direction state ,const  int numtocheck){
-        if(this->check_dirty(page , row , col , state , numtocheck)){
-                throw std::invalid_argument("^^^^^^^^");
-        }
-        if (state ==Direction::Horizontal){
-                if(col+numtocheck > col_limit){
-                throw std::invalid_argument("@@@@@@@@@");
-        }
-        }
-}
+// void ariel::Notebook::check_throws(const  int page ,const  int row ,const  int col ,const Direction state ,const  int numtocheck){
+//         if(this->check_dirty(page , row , col , state , numtocheck)){
+//                 throw std::invalid_argument("");
+//         }
+//         if (state ==Direction::Horizontal){
+//                 if(col+numtocheck > col_limit){
+//                 throw std::invalid_argument("@@@@@@@@@");
+//         }
+//         }
+// }
 
 void ariel::Notebook::check_pages_size(const  int page ){
-        if(mynotebook.size()<=page){
-                mynotebook.resize((unsigned int)page+1);
+        if(this->mynotebook.size()<=page){
+                this->mynotebook.resize((unsigned int)page+1);
         }
 }
 
 bool ariel::Notebook::check_dirty(const  int page ,const  int row ,const  int col ,const Direction state ,const  int numtocheck){
-        bool ans = mynotebook.at((unsigned int)page).check_dirty((unsigned int)row , (unsigned int)col , state , (unsigned int)numtocheck);
+        bool ans = this->mynotebook.at((unsigned int)page).check_dirty((unsigned int)row , (unsigned int)col , state , (unsigned int)numtocheck);
         return ans;  
 }
 
 void ariel::Notebook::write(const  int page ,const  int row ,const  int col ,const Direction state ,const std::string &towrite){
         check_t2(page , row , col);
-                if(col >lim_col){
-                throw::out_of_range("!@#@!#");
-        }
+
 
         if(state==Direction::Horizontal){
         check_t((unsigned int)col , towrite.size());
         }
         check_pages_size(page);
-        mynotebook[(unsigned int)page].write((unsigned int)row , (unsigned int)col , state , towrite);
+        this->mynotebook[(unsigned int)page].write((unsigned int)row , (unsigned int)col , state , towrite);
         
 
 }
 
 string ariel::Notebook::read(const  int page ,const   int row ,const   int col ,const Direction state ,const  int num){
         check_t2(page , row , col);
-                if(col > lim_col){
-                throw::out_of_range("!@#@!#");
-        }
+
         if (state == Direction::Horizontal){
                 check_t((unsigned int)col , (unsigned int)num);
         }
         check_pages_size(page);
       //  this->check_throws(page , row , col , state , num);
 
-        return mynotebook[(unsigned int)page].read((unsigned int)row , (unsigned int)col , state , (unsigned int)num);
+        return this->mynotebook[(unsigned int)page].read((unsigned int)row , (unsigned int)col , state , (unsigned int)num);
 
 }
 
 void ariel::Notebook::erase(const  int page ,const   int  row ,const   int col ,const Direction state ,const  int num){
         check_t2(page , row , col);
-                if(col > lim_col){
-                throw::out_of_range("!@#@!#");
-        }
+
 
                 if (state ==Direction::Horizontal){
                         check_t((unsigned int)col , (unsigned int)num);
         }
         check_pages_size(page);
-        mynotebook[(unsigned int)page].erase((unsigned int)row , (unsigned int)col , state , (unsigned int)num);
+        this->mynotebook[(unsigned int)page].erase((unsigned int)row , (unsigned int)col , state , (unsigned int)num);
 }
 
 void ariel::Notebook::show(  int page){
-        if(page < 0){
-                throw::out_of_range("&&&^^^");
-        }
+        check_t2(page , 0 ,0);
         check_pages_size(page);
-        mynotebook[(unsigned int)page].show_page();
+        this->mynotebook[(unsigned int)page].show_page();
 }
 
-
-// ariel::Row::Row(){
-//         myrow = (char*)malloc(sizeof(char)*row_limit);
-//         for(unsigned long j = 0 ; j < row_limit ; j++){
-//                 this->myrow[j]='_';
-//         }
-// }
 
 ariel::Row::Row(){
         for(unsigned int j = 0 ; j < col_limit ; j++){
@@ -190,14 +178,14 @@ void ariel::Page::check_size_rows(const unsigned int row){
 
 
 void ariel::Page::check_size_cols(const unsigned int row ,const string &tw){
-        if (mypage.size()<=row + tw.size()){
-                mypage.resize(row+tw.size());
+        if (this->mypage.size()<=row + tw.size()){
+                this->mypage.resize(row+tw.size());
 
         }
 }
 void ariel::Page::check_size_cols_toerase(const unsigned int row ,const unsigned int  numtodel){
-        if(mypage.size()<=row+numtodel){
-                mypage.resize(row+numtodel);
+        if(this->mypage.size()<=row+numtodel){
+                this->mypage.resize(row+numtodel);
         }
 
 }
@@ -210,7 +198,7 @@ void ariel::Page::write(const unsigned int row ,const  unsigned int pos ,const D
         }
 
         if(state == Direction::Horizontal){
-                mypage[row].write(pos,tw);
+                this->mypage[row].write(pos,tw);
 }
 
         else if(state == Direction::Vertical){
@@ -232,14 +220,14 @@ void ariel::Page::erase(const unsigned int row ,const  unsigned int pos ,const D
         
         if (state == Direction::Horizontal){
                 check_size_rows(row);
-                mypage[row].erase(pos , numtodel);
+                this->mypage[row].erase(pos , numtodel);
         }
         else if (state == Direction::Vertical){
                 check_size_cols_toerase(row , numtodel);
                  unsigned int j = 0 ;
                  unsigned int k = row ;
                 while(k < row+numtodel){
-                        mypage[row+j].erase(pos , 1);
+                        this->mypage[row+j].erase(pos , 1);
                         k+=1;
                         j+=1;
                 }
@@ -253,16 +241,16 @@ string ariel::Page::read(const unsigned int row ,const  unsigned int pos ,const 
         string res;
         
         if (state == Direction::Horizontal){
-                res = mypage[row].read(pos , numtoread);
+                res = this->mypage[row].read(pos , numtoread);
         }
         else if(state == Direction::Vertical){
-                if(mypage.size()<row+numtoread){
-                        mypage.resize(row+numtoread);
+                if(this->mypage.size()<row+numtoread){
+                        this->mypage.resize(row+numtoread);
                 }
                  unsigned int j = 0 ; 
                 i = row ; 
                 while (i < row + numtoread){
-                        res += mypage[row+j].readchar(pos);
+                        res += this->mypage[row+j].readchar(pos);
 
                         i+= 1;
                         j+= 1;
@@ -277,7 +265,7 @@ bool ariel::Page::check_dirty(const unsigned int row ,const unsigned int pos ,co
         bool ans=false ;
         bool final_ans = false; 
         if( state == Direction::Horizontal){
-              ans =   mypage[row].check_dirty(pos , numtocheck);
+              ans =   this->mypage[row].check_dirty(pos , numtocheck);
               
 }
 
